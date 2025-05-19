@@ -14,5 +14,12 @@ sidebar to download or upload a backup if needed.
 
 Ensure **Node.js 22** is installed locally before running development or build commands.
 
+If you plan to run `content_generation/transcribe_audio_folder.py`, install its optional dependencies:
+
+```bash
+apt-get install ffmpeg
+pip install openai-whisper tqdm
+```
+
 To enable automatic deployments, configure **GitHub Pages** in the repository settings and choose *GitHub Actions* as the source.
 The site will be hosted directly from GitHub Pages, with GitHub Actions running the build and deployment pipeline whenever changes land on `main`.
