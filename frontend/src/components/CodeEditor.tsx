@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import MonacoEditor from '@monaco-editor/react'
 import type { Question } from './questionData'
 
 interface Props {
@@ -11,9 +12,14 @@ interface Props {
 export default function CodeEditor({ question, code, onChange, onCheck }: Props) {
   const [local, setLocal] = useState(code)
 
-  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setLocal(e.target.value)
-    onChange(e.target.value)
+  useEffect(() => {
+    setLocal(code)
+  }, [code, question.id])
+
+  function handleChange(value: string | undefined) {
+    const val = value ?? ''
+    setLocal(val)
+    onChange(val)
   }
 
   function handleCheck() {
@@ -26,7 +32,13 @@ export default function CodeEditor({ question, code, onChange, onCheck }: Props)
 
   return (
     <div className="editor">
-      <textarea value={local} onChange={handleChange} rows={20} cols={60} />
+      <MonacoEditor
+        value={local}
+        language="python"
+        onChange={handleChange}
+        options={{ automaticLayout: true }}
+        className="h-96 w-full"
+      />
       <div>
         <button id="check-btn" onClick={handleCheck}>Check</button>
       </div>

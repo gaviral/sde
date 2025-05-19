@@ -9,6 +9,9 @@ npm install
 npm run dev
 ```
 
+If you update the project and new dependencies are introduced (for example
+`@monaco-editor/react`), run `npm install` again before attempting a build.
+
 The web app stores progress in your browser's `localStorage`. Use the Settings
 sidebar to download or upload a backup if needed.
 
