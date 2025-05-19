@@ -1,4 +1,44 @@
 .app {
-  text-align: center;
-  padding: 2rem;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  font-family: sans-serif;
+}
+.selector {
+  width: 200px;
+  overflow-y: auto;
+}
+.selector ul {
+  list-style: none;
+  padding: 0;
+}
+.selector button.active {
+  font-weight: bold;
+}
+.editor textarea {
+  width: 400px;
+}
+.settings, .details, .issues {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+}
+.voice {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: orange;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 24px;
+}
+.toast {
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  background: #333;
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: opacity 0.3s;
 }
