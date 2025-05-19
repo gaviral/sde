@@ -2,6 +2,7 @@ nvm install 22
 cd frontend
 npm install
 npm install @monaco-editor/react
+npx playwright install --with-deps
 cd ..
 pip install -r requirements.txt
 apt-get install ffmpeg
