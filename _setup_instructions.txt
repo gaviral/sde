@@ -1,4 +1,8 @@
+nvm install 22
 cd frontend
 npm install
 cd ..
 pip install -r requirements.txt
+apt-get install ffmpeg
+pip install openai-whisper tqdm
+
