@@ -1,6 +1,11 @@
 # SDE
 
 This repository contains a React frontend located in the `frontend/` directory.
+Version 1 implements the LeetCode‑style practice interface described in
+`docs/01_PRD_v1.md`. It includes a question selector, code editor with strict
+validation, settings sidebar, issue panel and an optional voice command button.
+Progress is saved in `localStorage` and can be exported or imported from the
+settings sidebar.
 
 ## Local Development
 
