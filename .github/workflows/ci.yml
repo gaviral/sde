@@ -24,3 +24,9 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: frontend
+      - name: Unit Tests
+        run: npm run test -- --run
+        working-directory: frontend
+      - name: E2E Tests
+        run: npm run test:e2e
+        working-directory: frontend

@@ -20,4 +20,14 @@ describe('CodeEditor', () => {
     )
     expect(screen.getByRole('textbox')).toHaveValue('s2')
   })
+
+  it('calls onCheck with issues when code is wrong', () => {
+    const onChange = vi.fn()
+    const onCheck = vi.fn()
+    render(
+      <CodeEditor question={q1} code={q1.starter} onChange={onChange} onCheck={onCheck} />,
+    )
+    screen.getByRole('button', { name: 'Check' }).click()
+    expect(onCheck).toHaveBeenCalledWith(['Solution does not match exactly.'])
+  })
 })
