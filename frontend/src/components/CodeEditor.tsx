@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
 import MonacoEditor from '@monaco-editor/react'
 import type { Question } from './questionData'
 
@@ -11,6 +12,10 @@ interface Props {
 
 export default function CodeEditor({ question, code, onChange, onCheck }: Props) {
   const [local, setLocal] = useState(code)
+
+  useEffect(() => {
+    setLocal(code)
+  }, [code, question.id])
 
   function handleChange(value: string | undefined) {
     const val = value ?? ''
