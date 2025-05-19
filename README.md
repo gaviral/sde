@@ -17,19 +17,6 @@ npm install
 npm run dev
 ```
 
-## Development
-
-This project uses **husky** to run `npm run lint && npm run build` before each
-commit. After installing dependencies in `frontend/`, run `npm run prepare`
-once to set up the Git hooks. The generated pre‑commit hook ensures both the
-lint step and production build succeed locally before the commit is allowed.
-
-You can also batch‑transcribe audio files using `content_generation/transcribe_audio_folder.py`:
-
-```bash
-python content_generation/transcribe_audio_folder.py
-```
-
 ## Deployment
 
 The site is automatically built and deployed to **GitHub Pages** whenever changes are pushed to the `main` branch. The workflow configuration lives in `.github/workflows/deploy.yml`. GitHub Pages hosts the production website, while GitHub Actions provides the continuous integration and deployment pipeline.

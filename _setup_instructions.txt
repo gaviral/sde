@@ -1,10 +1,10 @@
-nvm install 22
+# nvm install 22 # no need. the env is manually set to node 22
 cd frontend
 npm install
 npm install @monaco-editor/react
+# npx --yes playwright install --with-deps # no need because we don't have playwright tests yet. we haven't merged them yet.
 npm install husky lint-staged --save-dev
 cd ..
-pip install -r requirements.txt
-apt-get install ffmpeg
-pip install openai-whisper tqdm
-
+# pip install -r requirements.txt # no need. not working on python part of the project yet
+# apt-get install ffmpeg # no need. not working on python part of the project yet
+# pip install openai-whisper tqdm # no need. not working on python part of the project yet
