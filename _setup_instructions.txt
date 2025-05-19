@@ -2,6 +2,7 @@ nvm install 22
 cd frontend
 npm install
 npm install @monaco-editor/react
+npm install husky lint-staged --save-dev
 cd ..
 pip install -r requirements.txt
 apt-get install ffmpeg
