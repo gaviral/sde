@@ -1,4 +1,5 @@
 # Human Instructions
+This file lists any manual, network-dependent steps that the developer cannot execute during offline development. Please check these instructions whenever repository changes are made to see if new tasks have been added.
 
 Run the following commands with network access before development:
 
