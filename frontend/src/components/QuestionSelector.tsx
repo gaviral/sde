@@ -1,4 +1,4 @@
-import { Question } from './questionData'
+import type { Question } from './questionData'
 
 interface Props {
   questions: Question[]
