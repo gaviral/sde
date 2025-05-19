@@ -1,4 +1,4 @@
-import { Question } from './questionData'
+import type { Question } from './questionData'
 
 export default function QuestionDetails({ question }: { question: Question }) {
   return (

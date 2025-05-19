@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Question } from './questionData'
+import type { Question } from './questionData'
 
 interface Props {
   question: Question

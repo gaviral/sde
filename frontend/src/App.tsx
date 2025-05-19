@@ -11,7 +11,7 @@ import type { Progress } from './components/storage'
 import './App.css'
 
 function App() {
-  const [progress, setProgress] = useState(() => loadProgress(questions))
+  const [progress, setProgress] = useState(() => loadProgress())
   const [issues, setIssues] = useState<string[]>([])
 
   const current = questions.find(q => q.id === progress.selected) || questions[0]
