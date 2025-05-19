@@ -1,28 +1,6 @@
 # Human Instructions
-This file lists any manual, network-dependent steps that the developer cannot execute during offline development. Please check these instructions whenever repository changes are made to see if new tasks have been added.
 
-Run the following commands with network access before development:
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+# Human Responses
 
-If you update the project and new dependencies are introduced (for example
-`@monaco-editor/react`), run `npm install` again before attempting a build.
-
-The web app stores progress in your browser's `localStorage`. Use the Settings
-sidebar to download or upload a backup if needed.
-
-Ensure **Node.js 22** is installed locally before running development or build commands.
-
-If you plan to run `content_generation/transcribe_audio_folder.py`, install its optional dependencies:
-
-```bash
-apt-get install ffmpeg
-pip install openai-whisper tqdm
-```
-
-To enable automatic deployments, configure **GitHub Pages** in the repository settings and choose *GitHub Actions* as the source.
-The site will be hosted directly from GitHub Pages, with GitHub Actions running the build and deployment pipeline whenever changes land on `main`.
+I already added the contents of _setup_instructions.txt to the scripts that runs everytime on the servers (during the internet access environment phase) after which you do offline development.
