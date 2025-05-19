@@ -19,11 +19,10 @@ npm run dev
 
 ## Development
 
-This project uses **husky** and **lint-staged** to lint staged TypeScript files
-before each commit. After installing dependencies in `frontend/`, run
-`npm run prepare` once to set up the Git hooks. The generated pre‑commit hook
-executes `lint-staged`, which runs ESLint on staged `src/**/*.ts` and
-`src/**/*.tsx` files.
+This project uses **husky** to run `npm run lint && npm run build` before each
+commit. After installing dependencies in `frontend/`, run `npm run prepare`
+once to set up the Git hooks. The generated pre‑commit hook ensures both the
+lint step and production build succeed locally before the commit is allowed.
 
 You can also batch‑transcribe audio files using `content_generation/transcribe_audio_folder.py`:
 
