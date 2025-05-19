@@ -7,6 +7,7 @@ import SettingsSidebar from './components/SettingsSidebar'
 import VoiceButton from './components/VoiceButton'
 import { questions } from './components/questionData'
 import { loadProgress, saveProgress } from './components/storage'
+import type { Progress } from './components/storage'
 import './App.css'
 
 function App() {
@@ -57,9 +58,11 @@ function App() {
         onExport={() => saveAs(progress)}
         onImport={raw => {
           try {
-            const data = JSON.parse(raw)
+            const data = JSON.parse(raw) as Progress
             setProgress(data)
-          } catch {}
+          } catch (e) {
+            console.error('Failed to parse progress data from local storage:', e)
+          }
         }}
       />
       <VoiceButton onCommand={handleCommand} />
@@ -67,7 +70,7 @@ function App() {
   )
 }
 
-function saveAs(progress: any) {
+function saveAs(progress: Progress) {
   const blob = new Blob([JSON.stringify(progress)], { type: 'application/json' })
   const a = document.createElement('a')
   a.href = URL.createObjectURL(blob)
