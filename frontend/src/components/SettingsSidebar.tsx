@@ -5,6 +5,9 @@ interface Props {
   onImport: (data: string) => void
 }
 
+/**
+ * Sidebar for switching modes and importing/exporting progress.
+ */
 export default function SettingsSidebar({ mode, onModeChange, onExport, onImport }: Props) {
   function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]

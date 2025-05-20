@@ -11,6 +11,9 @@ import type { Progress } from './components/storage'
 import { saveAs } from './utils/file'
 import './App.css'
 
+/**
+ * Main application component wiring together all UI pieces.
+ */
 function App() {
   // persistent progress backed by localStorage via custom hook
   const [progress, setProgress] = usePersistentProgress()
