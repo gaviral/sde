@@ -8,19 +8,23 @@ import VoiceButton from './components/VoiceButton'
 import { questions } from './components/questionData'
 import usePersistentProgress from './hooks/usePersistentProgress'
 import type { Progress } from './components/storage'
+import { saveAs } from './utils/file'
 import './App.css'
 
 function App() {
+  // persistent progress backed by localStorage via custom hook
   const [progress, setProgress] = usePersistentProgress()
   const [issues, setIssues] = useState<string[]>([])
 
   const current = questions.find(q => q.id === progress.selected) || questions[0]
 
 
+  // update stored code when the editor changes
   function setCode(code: string) {
     setProgress(p => ({ ...p, codes: { ...p.codes, [current.id]: code } }))
   }
 
+  // interpret voice commands like "go to question two"
   function handleCommand(cmd: string) {
     const match = cmd.match(/question (\d+)/i)
     if (match) {
@@ -30,6 +34,7 @@ function App() {
       }
     }
     if (/check code/i.test(cmd)) {
+      // trigger the editor validation
       document.getElementById('check-btn')?.click()
     }
   }
@@ -52,7 +57,7 @@ function App() {
       <SettingsSidebar
         mode={progress.mode}
         onModeChange={mode => setProgress(p => ({ ...p, mode }))}
-        onExport={() => saveAs(progress)}
+        onExport={() => saveAs(progress)} // download progress to a file
         onImport={raw => {
           try {
             const data = JSON.parse(raw) as Progress
@@ -62,17 +67,9 @@ function App() {
           }
         }}
       />
-      <VoiceButton onCommand={handleCommand} />
+      <VoiceButton onCommand={handleCommand} /> {/* voice recognition */}
     </div>
   )
-}
-
-function saveAs(progress: Progress) {
-  const blob = new Blob([JSON.stringify(progress)], { type: 'application/json' })
-  const a = document.createElement('a')
-  a.href = URL.createObjectURL(blob)
-  a.download = 'progress.json'
-  a.click()
 }
 
 export default App
