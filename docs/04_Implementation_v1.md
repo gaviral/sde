@@ -39,3 +39,12 @@ cd frontend
 npm run build
 npm run preview
 ```
+
+## Hooks and Utilities
+
+Several helper modules keep components lightweight:
+
+- `usePersistentProgress` stores progress in `localStorage` so refreshes keep the user's answers.
+- `useSpeechRecognition` abstracts browser speech APIs for voice commands.
+- `validateSolution` checks editor content against a reference answer.
+- `saveAs` triggers downloads of progress in JSON format.

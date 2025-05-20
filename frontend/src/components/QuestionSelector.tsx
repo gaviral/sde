@@ -5,6 +5,9 @@ interface Props {
   current: number
   onSelect: (id: number) => void
 }
+/**
+ * List all questions and allow one to be selected.
+ */
 
 export default function QuestionSelector({ questions, current, onSelect }: Props) {
   return (

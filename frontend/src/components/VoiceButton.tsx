@@ -5,6 +5,9 @@ import TranscriptionToast from './TranscriptionToast'
 interface Props {
   onCommand: (cmd: string) => void
 }
+/**
+ * Button that captures speech and passes commands upward.
+ */
 
 export default function VoiceButton({ onCommand }: Props) {
   const [text, setText] = useState('')

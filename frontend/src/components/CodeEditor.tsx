@@ -11,6 +11,12 @@ interface Props {
   onCheck: (issues: string[]) => void
 }
 
+/**
+ * Render the code editor and expose code changes and validation.
+ *
+ * Local state mirrors the provided `code` prop and updates callers
+ * when the user edits the code or triggers a validation check.
+ */
 export default function CodeEditor({ question, code, onChange, onCheck }: Props) {
   const [local, setLocal] = useState(code)
 
