@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import QuestionSelector from './components/QuestionSelector'
 import QuestionDetails from './components/QuestionDetails'
 import CodeEditor from './components/CodeEditor'
@@ -6,19 +6,16 @@ import IssuePanel from './components/IssuePanel'
 import SettingsSidebar from './components/SettingsSidebar'
 import VoiceButton from './components/VoiceButton'
 import { questions } from './components/questionData'
-import { loadProgress, saveProgress } from './components/storage'
+import usePersistentProgress from './hooks/usePersistentProgress'
 import type { Progress } from './components/storage'
 import './App.css'
 
 function App() {
-  const [progress, setProgress] = useState(() => loadProgress())
+  const [progress, setProgress] = usePersistentProgress()
   const [issues, setIssues] = useState<string[]>([])
 
   const current = questions.find(q => q.id === progress.selected) || questions[0]
 
-  useEffect(() => {
-    saveProgress(progress)
-  }, [progress])
 
   function setCode(code: string) {
     setProgress(p => ({ ...p, codes: { ...p.codes, [current.id]: code } }))
