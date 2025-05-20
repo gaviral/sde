@@ -8,7 +8,7 @@
  * @param filename - Optional filename for the download.
  */
 export function saveAs(data: unknown, filename = 'progress.json') {
-  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' })
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
   const a = document.createElement('a')
   a.href = URL.createObjectURL(blob)
   a.download = filename
