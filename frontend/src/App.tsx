@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
 import { AppProvider } from './context/AppContext';
+import QuestionSelectorSidebar from './components/QuestionSelectorSidebar';
+import QuestionDetailsPanel from './components/QuestionDetailsPanel';
+import CodeEditor from './components/CodeEditor';
+import IssuePanel from './components/IssuePanel';
+import SettingsSidebar from './components/SettingsSidebar';
+import VoiceCommandButton from './components/VoiceCommandButton';
 import './App.css';
 
 function App() {
@@ -12,9 +18,18 @@ function App() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Add keyboard shortcuts here for accessibility
-      if (e.key === 'q' && e.ctrlKey) setLeftSidebarVisible(prev => !prev);
-      if (e.key === 's' && e.ctrlKey) setRightSidebarVisible(prev => !prev);
-      if (e.key === 'i' && e.ctrlKey) setIssuePanelVisible(prev => !prev);
+      if (e.ctrlKey && e.key === 'q') {
+        e.preventDefault();
+        setLeftSidebarVisible(prev => !prev);
+      }
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        setRightSidebarVisible(prev => !prev);
+      }
+      if (e.ctrlKey && e.key === 'i') {
+        e.preventDefault();
+        setIssuePanelVisible(prev => !prev);
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -24,51 +39,44 @@ function App() {
   return (
     <AppProvider>
       <div className="app-container h-screen w-screen flex overflow-hidden">
-        {/* Placeholder for Left Sidebar */}
-        <div className={`left-sidebar ${leftSidebarVisible ? 'visible' : 'hidden'}`}>
-          Question Selector (To be implemented)
-        </div>
+        <QuestionSelectorSidebar
+          isVisible={leftSidebarVisible}
+          onVisibilityChange={setLeftSidebarVisible}
+        />
 
-        {/* Main Work Area */}
-        <div className="main-area flex flex-col flex-grow h-full">
-          <div className="main-content flex flex-grow">
-            <div className="question-details p-4 border-r border-gray-200">
-              Question Details (To be implemented)
-            </div>
-            <div className="code-editor-container flex-grow p-4">
-              Code Editor (To be implemented)
+        <div className="main-area flex flex-col flex-grow h-full overflow-hidden">
+          <div className="main-content flex flex-grow overflow-hidden">
+            <QuestionDetailsPanel />
+            <div className="code-editor-container flex-grow overflow-hidden">
+              <CodeEditor />
             </div>
           </div>
-          <div className={`issue-panel p-2 border-t border-gray-200 ${issuePanelVisible ? 'visible' : 'hidden'}`}>
-            Issue Panel (To be implemented)
-          </div>
+
+          <IssuePanel
+            isVisible={issuePanelVisible}
+            onVisibilityChange={setIssuePanelVisible}
+          />
         </div>
 
-        {/* Placeholder for Right Sidebar */}
-        <div className={`right-sidebar ${rightSidebarVisible ? 'visible' : 'hidden'}`}>
-          Settings (To be implemented)
-        </div>
+        <SettingsSidebar
+          isVisible={rightSidebarVisible}
+          onVisibilityChange={setRightSidebarVisible}
+        />
 
-        {/* Placeholder for Voice Command Button */}
-        <div className="voice-command-button fixed bottom-4 right-4 w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center text-white cursor-pointer">
-          🎙️
-        </div>
+        <VoiceCommandButton />
 
         {/* Hover detection zones */}
         <div
           className="hover-zone-left"
           onMouseEnter={() => setLeftSidebarVisible(true)}
-          onMouseLeave={() => setLeftSidebarVisible(false)}
         />
         <div
           className="hover-zone-right"
           onMouseEnter={() => setRightSidebarVisible(true)}
-          onMouseLeave={() => setRightSidebarVisible(false)}
         />
         <div
           className="hover-zone-bottom"
           onMouseEnter={() => setIssuePanelVisible(true)}
-          onMouseLeave={() => setIssuePanelVisible(false)}
         />
       </div>
     </AppProvider>
