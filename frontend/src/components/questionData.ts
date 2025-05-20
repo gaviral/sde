@@ -1,3 +1,5 @@
+import data from '../../content/questions.json'
+
 export interface Question {
   id: number
   title: string
@@ -6,27 +8,11 @@ export interface Question {
   solution: string
 }
 
-export const questions: Question[] = [
-  {
-    id: 1,
-    title: 'Sort an Array',
-    description: 'Given an array, return it sorted.',
-    starter: 'def solve(arr):\n    pass',
-    solution: 'def solve(arr):\n    return sorted(arr)'
-  },
-  { id: 2, title: 'Two Sum', description: 'Return indices of two numbers that add up to target.', starter: 'def two_sum(nums, target):\n    pass', solution: 'def two_sum(nums, target):\n    m={}\n    for i,n in enumerate(nums):\n        if target-n in m: return [m[target-n], i]\n        m[n]=i' },
-  { id: 3, title: 'Two Sum II – Input Array Is Sorted', description: 'Find two numbers in a sorted array that add up to target.', starter: 'def two_sum_sorted(nums, target):\n    pass', solution: 'def two_sum_sorted(nums, target):\n    l,r=0,len(nums)-1\n    while l<r:\n        s=nums[l]+nums[r]\n        if s==target: return [l+1,r+1]\n        if s<target: l+=1\n        else: r-=1' },
-  { id: 4, title: 'Meeting Rooms', description: 'Determine if a person could attend all meetings.', starter: 'def can_attend(intervals):\n    pass', solution: 'def can_attend(intervals):\n    intervals.sort()\n    return all(a[1]<=b[0] for a,b in zip(intervals,intervals[1:]))' },
-  { id: 5, title: 'Intersection of Three Sorted Arrays', description: 'Return the intersection of three sorted arrays.', starter: 'def intersection(a,b,c):\n    pass', solution: 'def intersection(a,b,c):\n    i=j=k=0\n    res=[]\n    while i<len(a) and j<len(b) and k<len(c):\n        x=min(a[i],b[j],c[k])\n        if a[i]==b[j]==c[k]: res.append(a[i]);i+=1;j+=1;k+=1\n        else:\n            if a[i]==x: i+=1\n            if b[j]==x: j+=1\n            if c[k]==x: k+=1\n    return res' },
-  { id: 6, title: 'Intersection of Two Arrays', description: 'Return unique intersection of two arrays.', starter: 'def intersection_two(a,b):\n    pass', solution: 'def intersection_two(a,b):\n    return list(set(a)&set(b))' },
-  { id: 7, title: 'Merge Sorted Array', description: 'Merge nums2 into nums1 as one sorted array.', starter: 'def merge(nums1,m,nums2,n):\n    pass', solution: 'def merge(nums1,m,nums2,n):\n    i=m-1;j=n-1;k=m+n-1\n    while j>=0:\n        if i>=0 and nums1[i]>nums2[j]: nums1[k]=nums1[i];i-=1\n        else: nums1[k]=nums2[j];j-=1\n        k-=1' },
-  { id: 8, title: 'Kth Largest Element in an Array', description: 'Find the kth largest element.', starter: 'def kth_largest(nums,k):\n    pass', solution: 'def kth_largest(nums,k):\n    return sorted(nums,reverse=True)[k-1]' },
-  { id: 9, title: 'K Closest Points to Origin', description: 'Return k closest points to origin.', starter: 'def k_closest(points,k):\n    pass', solution: 'def k_closest(points,k):\n    return sorted(points,key=lambda p:p[0]**2+p[1]**2)[:k]' },
-  { id: 10, title: 'Top K Frequent Elements', description: 'Return top k frequent elements.', starter: 'def top_k(nums,k):\n    pass', solution: 'def top_k(nums,k):\n    from collections import Counter\n    return [v for v,_ in Counter(nums).most_common(k)]' },
-  { id: 11, title: 'Sort Colors', description: 'Sort colors in-place.', starter: 'def sort_colors(nums):\n    pass', solution: 'def sort_colors(nums):\n    i=j=0\n    for k in range(len(nums)):\n        v=nums[k]\n        nums[k]=2\n        if v<2: nums[j]=1;j+=1\n        if v==0: nums[i]=0;i+=1' },
-]
+const baseQuestions = data as Question[]
 
-for (let i = 12; i <= 50; i++) {
+export const questions: Question[] = [...baseQuestions]
+
+for (let i = baseQuestions.length + 1; i <= 50; i++) {
   questions.push({
     id: i,
     title: `Placeholder ${i}`,
