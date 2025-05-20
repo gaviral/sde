@@ -1,7 +1,9 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import type { AppMode, Question } from '../types';
 import { questionData } from '../data/questions';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import type { StorageData } from '../data/localStorage';
 
 interface AppContextType {
     currentQuestionId: number;
@@ -15,17 +17,75 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+const STORAGE_KEY = 'leetcode-practice-v1';
+
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-    const [currentQuestionId, setCurrentQuestionId] = useState(1);
-    const [mode, setMode] = useState<AppMode>('learning');
+    // Use localStorage hook
+    const [storage, setStorage] = useLocalStorage<StorageData>(STORAGE_KEY, {
+        version: '1.0',
+        settings: {
+            mode: 'learning',
+        },
+        lastQuestionId: 1,
+        questions: {}
+    });
+
+    // Derive state from localStorage
+    const [currentQuestionId, setCurrentQuestionId] = useState<number>(storage.lastQuestionId);
+    const [mode, setMode] = useState<AppMode>(storage.settings.mode);
     const [userCode, setUserCode] = useState<Record<number, string>>({});
 
+    // Load user code from localStorage on initial render
+    useEffect(() => {
+        const loadedUserCode: Record<number, string> = {};
+
+        Object.entries(storage.questions).forEach(([id, data]) => {
+            loadedUserCode[parseInt(id)] = data.userCode;
+        });
+
+        setUserCode(loadedUserCode);
+    }, []);
+
+    // Update localStorage when current question changes
+    useEffect(() => {
+        setStorage({
+            ...storage,
+            lastQuestionId: currentQuestionId
+        });
+    }, [currentQuestionId, setStorage]);
+
+    // Update localStorage when mode changes
+    useEffect(() => {
+        setStorage({
+            ...storage,
+            settings: {
+                ...storage.settings,
+                mode
+            }
+        });
+    }, [mode, setStorage]);
+
+    // Update user code in state and localStorage
     const updateUserCode = (questionId: number, code: string) => {
+        // Update state
         setUserCode(prev => ({
             ...prev,
             [questionId]: code
         }));
-        // Later we'll add localStorage persistence here
+
+        // Update localStorage
+        const updatedQuestions = {
+            ...storage.questions,
+            [questionId]: {
+                userCode: code,
+                lastSaved: new Date().toISOString()
+            }
+        };
+
+        setStorage({
+            ...storage,
+            questions: updatedQuestions
+        });
     };
 
     return (

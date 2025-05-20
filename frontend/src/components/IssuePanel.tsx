@@ -38,6 +38,7 @@ const IssuePanel: React.FC<IssuePanelProps> = ({ isVisible, onVisibilityChange }
                     <button
                         onClick={checkCode}
                         className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 transition"
+                        data-action="check"
                     >
                         Check
                     </button>

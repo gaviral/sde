@@ -11,6 +11,7 @@ const PATTERNS = [
     { regex: /(show|open|display) settings/i, command: 'showSettings' },
     { regex: /(show|open|display) questions/i, command: 'showQuestions' },
     { regex: /(show|open|display) issues/i, command: 'showIssues' },
+    { regex: /(?:toggle|show|hide) debug/i, command: 'debug' },
 ];
 
 export const parseVoiceCommand = (transcript: string): CommandResult | null => {

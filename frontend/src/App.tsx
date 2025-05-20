@@ -69,14 +69,17 @@ function App() {
         <div
           className="hover-zone-left"
           onMouseEnter={() => setLeftSidebarVisible(true)}
+          data-action="questions"
         />
         <div
           className="hover-zone-right"
           onMouseEnter={() => setRightSidebarVisible(true)}
+          data-action="settings"
         />
         <div
           className="hover-zone-bottom"
           onMouseEnter={() => setIssuePanelVisible(true)}
+          data-action="issues"
         />
       </div>
     </AppProvider>

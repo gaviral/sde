@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useVoiceRecognition } from '../../hooks/useVoiceRecognition';
 import { parseVoiceCommand } from '../../utils/voiceCommandParser';
 import { useAppContext } from '../../context/AppContext';
@@ -19,6 +19,10 @@ const VoiceCommandButton: React.FC = () => {
         questions
     } = useAppContext();
 
+    // Debug state for development
+    const [debug, setDebug] = useState(false);
+    const [lastCommand, setLastCommand] = useState<string | null>(null);
+
     // Process voice commands when the transcript changes
     useEffect(() => {
         if (!transcript) return;
@@ -26,6 +30,9 @@ const VoiceCommandButton: React.FC = () => {
         const command = parseVoiceCommand(transcript);
         if (command) {
             console.log('Voice command detected:', command);
+
+            // Store last command for debug view
+            setLastCommand(`${command.command} ${JSON.stringify(command.params)}`);
 
             switch (command.command) {
                 case 'navigate':
@@ -53,6 +60,10 @@ const VoiceCommandButton: React.FC = () => {
                     // Find and trigger the issues button
                     const issuesButton = document.querySelector('[data-action="issues"]') as HTMLButtonElement;
                     issuesButton?.click();
+                    break;
+                case 'debug':
+                    // Toggle debug mode
+                    setDebug(prev => !prev);
                     break;
                 default:
                     break;
@@ -83,9 +94,28 @@ const VoiceCommandButton: React.FC = () => {
                     disabled={isListening}
                     data-action="voice"
                     aria-label="Voice command"
+                    onDoubleClick={() => setDebug(prev => !prev)}
                 >
                     🎙️
                 </button>
+
+                {/* Debug overlay (double-click mic button to show) */}
+                {debug && (
+                    <div className="absolute bottom-16 right-0 bg-black bg-opacity-80 text-white p-2 rounded text-xs w-48">
+                        <div className="mb-1"><strong>Debug:</strong> Voice Commands</div>
+                        {error && <div className="text-red-400">Error: {error}</div>}
+                        {lastCommand && <div>Last command: {lastCommand}</div>}
+                        <div className="mt-1 text-gray-400">Available commands:</div>
+                        <ul className="text-gray-300 list-disc list-inside">
+                            <li>go to question [number]</li>
+                            <li>check code</li>
+                            <li>show settings</li>
+                            <li>show questions</li>
+                            <li>show issues</li>
+                            <li>debug</li>
+                        </ul>
+                    </div>
+                )}
             </div>
 
             <TranscriptionToast
