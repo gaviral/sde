@@ -12,6 +12,7 @@ export interface StorageData {
         userCode: string;
         lastSaved: string;
     }>;
+    completedQuestionIds: number[];
 }
 
 // Create an empty storage object with default values
@@ -21,7 +22,8 @@ export const createEmptyStorage = (): StorageData => ({
         mode: 'learning',
     },
     lastQuestionId: 1,
-    questions: {}
+    questions: {},
+    completedQuestionIds: []
 });
 
 // Save to localStorage

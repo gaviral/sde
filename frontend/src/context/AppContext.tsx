@@ -13,6 +13,9 @@ interface AppContextType {
     questions: Question[];
     userCode: Record<number, string>;
     updateUserCode: (questionId: number, code: string) => void;
+    completedQuestions: Set<number>;
+    markQuestionCompleted: (questionId: number) => void;
+    isQuestionCompleted: (questionId: number) => boolean;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -27,13 +30,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             mode: 'learning',
         },
         lastQuestionId: 1,
-        questions: {}
+        questions: {},
+        completedQuestionIds: []
     });
 
     // Derive state from localStorage
     const [currentQuestionId, setCurrentQuestionId] = useState<number>(storage.lastQuestionId);
     const [mode, setMode] = useState<AppMode>(storage.settings.mode);
     const [userCode, setUserCode] = useState<Record<number, string>>({});
+    const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(
+        new Set(storage.completedQuestionIds || [])
+    );
 
     // Load user code from localStorage on initial render
     useEffect(() => {
@@ -88,6 +95,24 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         });
     };
 
+    // Mark a question as completed
+    const markQuestionCompleted = (questionId: number) => {
+        const newCompletedQuestions = new Set(completedQuestions);
+        newCompletedQuestions.add(questionId);
+        setCompletedQuestions(newCompletedQuestions);
+
+        // Update localStorage
+        setStorage({
+            ...storage,
+            completedQuestionIds: Array.from(newCompletedQuestions)
+        });
+    };
+
+    // Check if a question is completed
+    const isQuestionCompleted = (questionId: number) => {
+        return completedQuestions.has(questionId);
+    };
+
     return (
         <AppContext.Provider value={{
             currentQuestionId,
@@ -96,7 +121,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             setMode,
             questions: questionData,
             userCode,
-            updateUserCode
+            updateUserCode,
+            completedQuestions,
+            markQuestionCompleted,
+            isQuestionCompleted
         }}>
             {children}
         </AppContext.Provider>

@@ -1,15 +1,28 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { validateCode } from '../utils/codeValidator';
 import { useAppContext } from '../context/AppContext';
 
 interface IssuePanelProps {
     isVisible: boolean;
     onVisibilityChange: (visible: boolean) => void;
+    provideCheckButtonRef?: (ref: HTMLButtonElement | null) => void;
 }
 
-const IssuePanel: React.FC<IssuePanelProps> = ({ isVisible, onVisibilityChange }) => {
-    const { currentQuestionId, questions, userCode } = useAppContext();
+const IssuePanel: React.FC<IssuePanelProps> = ({
+    isVisible,
+    onVisibilityChange,
+    provideCheckButtonRef
+}) => {
+    const { currentQuestionId, questions, userCode, markQuestionCompleted } = useAppContext();
     const [issues, setIssues] = useState<string[]>([]);
+    const checkButtonRef = useRef<HTMLButtonElement>(null);
+
+    // Provide the ref to the parent component
+    useEffect(() => {
+        if (provideCheckButtonRef && checkButtonRef.current) {
+            provideCheckButtonRef(checkButtonRef.current);
+        }
+    }, [provideCheckButtonRef]);
 
     const currentQuestion = questions.find(q => q.id === currentQuestionId);
     const currentUserCode = userCode[currentQuestionId] || '';
@@ -18,14 +31,17 @@ const IssuePanel: React.FC<IssuePanelProps> = ({ isVisible, onVisibilityChange }
         if (!currentQuestion) return;
 
         const result = validateCode(currentUserCode, currentQuestion.solution);
-        setIssues(result.issues);
 
         if (result.isValid) {
             setIssues(['✅ Your solution is correct!']);
+            // Mark the question as completed
+            markQuestionCompleted(currentQuestionId);
+        } else {
+            setIssues(result.issues);
         }
 
         // Show the panel if there are issues
-        if (result.issues.length > 0) {
+        if (result.issues.length > 0 || result.isValid) {
             onVisibilityChange(true);
         }
     };
@@ -36,6 +52,7 @@ const IssuePanel: React.FC<IssuePanelProps> = ({ isVisible, onVisibilityChange }
                 <h3 className="font-bold">Issues</h3>
                 <div className="flex space-x-2">
                     <button
+                        ref={checkButtonRef}
                         onClick={checkCode}
                         className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 transition"
                         data-action="check"

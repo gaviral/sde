@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useVoiceRecognition } from '../../hooks/useVoiceRecognition';
 import { parseVoiceCommand } from '../../utils/voiceCommandParser';
 import { useAppContext } from '../../context/AppContext';
 import TranscriptionToast from './TranscriptionToast';
 
-const VoiceCommandButton: React.FC = () => {
+interface VoiceCommandButtonProps {
+    provideButtonRef?: (ref: HTMLButtonElement | null) => void;
+}
+
+const VoiceCommandButton: React.FC<VoiceCommandButtonProps> = ({ provideButtonRef }) => {
     const {
         isListening,
         transcript,
@@ -22,6 +26,16 @@ const VoiceCommandButton: React.FC = () => {
     // Debug state for development
     const [debug, setDebug] = useState(false);
     const [lastCommand, setLastCommand] = useState<string | null>(null);
+
+    // Ref for the voice button
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
+    // Provide the ref to the parent component
+    useEffect(() => {
+        if (provideButtonRef && buttonRef.current) {
+            provideButtonRef(buttonRef.current);
+        }
+    }, [provideButtonRef]);
 
     // Process voice commands when the transcript changes
     useEffect(() => {
@@ -88,6 +102,7 @@ const VoiceCommandButton: React.FC = () => {
         <>
             <div className="fixed bottom-4 right-4">
                 <button
+                    ref={buttonRef}
                     className={`w-12 h-12 rounded-full ${isListening ? 'bg-red-500 animate-pulse' : 'bg-orange-500 hover:bg-orange-600'
                         } flex items-center justify-center text-white transition`}
                     onClick={startListening}

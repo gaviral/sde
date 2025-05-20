@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { AppProvider } from './context/AppContext';
 import QuestionSelectorSidebar from './components/QuestionSelectorSidebar';
 import QuestionDetailsPanel from './components/QuestionDetailsPanel';
@@ -14,27 +14,76 @@ function App() {
   const [rightSidebarVisible, setRightSidebarVisible] = useState(false);
   const [issuePanelVisible, setIssuePanelVisible] = useState(false);
 
+  // Refs for elements that need focus
+  const voiceButtonRef = useRef<HTMLButtonElement>(null);
+  const checkButtonRef = useRef<HTMLButtonElement>(null);
+
   // Keyboard shortcut handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Add keyboard shortcuts here for accessibility
-      if (e.ctrlKey && e.key === 'q') {
-        e.preventDefault();
-        setLeftSidebarVisible(prev => !prev);
+      // Control + key combinations
+      if (e.ctrlKey) {
+        switch (e.key) {
+          case 'q':
+            e.preventDefault();
+            setLeftSidebarVisible(prev => !prev);
+            break;
+          case 's':
+            e.preventDefault();
+            setRightSidebarVisible(prev => !prev);
+            break;
+          case 'i':
+            e.preventDefault();
+            setIssuePanelVisible(prev => !prev);
+            break;
+          case 'Enter':
+            e.preventDefault();
+            // Find and click the check button
+            document.querySelector<HTMLButtonElement>('[data-action="check"]')?.click();
+            break;
+          case 'v':
+            e.preventDefault();
+            // Focus the voice button
+            voiceButtonRef.current?.focus();
+            voiceButtonRef.current?.click();
+            break;
+          default:
+            break;
+        }
       }
-      if (e.ctrlKey && e.key === 's') {
-        e.preventDefault();
-        setRightSidebarVisible(prev => !prev);
+
+      // Alt + key combinations for navigation
+      if (e.altKey) {
+        const questionNumber = parseInt(e.key);
+        if (!isNaN(questionNumber) && questionNumber >= 0 && questionNumber <= 9) {
+          e.preventDefault();
+          // Find and click the respective question (0 = 10)
+          const targetQuestion = questionNumber === 0 ? 10 : questionNumber;
+          document.querySelector<HTMLElement>(`[data-question-id="${targetQuestion}"]`)?.click();
+        }
       }
-      if (e.ctrlKey && e.key === 'i') {
-        e.preventDefault();
-        setIssuePanelVisible(prev => !prev);
+
+      // Escape key to close all panels
+      if (e.key === 'Escape') {
+        setLeftSidebarVisible(false);
+        setRightSidebarVisible(false);
+        setIssuePanelVisible(false);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Provide the refs to the components
+  const provideVoiceButtonRef = (ref: HTMLButtonElement | null) => {
+    if (ref) voiceButtonRef.current = ref;
+  };
+
+  const provideCheckButtonRef = (ref: HTMLButtonElement | null) => {
+    if (ref) checkButtonRef.current = ref;
+  };
 
   return (
     <AppProvider>
@@ -55,6 +104,7 @@ function App() {
           <IssuePanel
             isVisible={issuePanelVisible}
             onVisibilityChange={setIssuePanelVisible}
+            provideCheckButtonRef={provideCheckButtonRef}
           />
         </div>
 
@@ -63,7 +113,7 @@ function App() {
           onVisibilityChange={setRightSidebarVisible}
         />
 
-        <VoiceCommandButton />
+        <VoiceCommandButton provideButtonRef={provideVoiceButtonRef} />
 
         {/* Hover detection zones */}
         <div
@@ -81,6 +131,11 @@ function App() {
           onMouseEnter={() => setIssuePanelVisible(true)}
           data-action="issues"
         />
+
+        {/* Keyboard shortcut help tooltip */}
+        <div className="fixed bottom-4 left-4 bg-gray-800 text-white text-xs p-2 rounded-md opacity-50 hover:opacity-100 transition-opacity">
+          <strong>Shortcuts:</strong> Ctrl+Q (Questions), Ctrl+S (Settings), Ctrl+I (Issues), Ctrl+Enter (Check), Ctrl+V (Voice)
+        </div>
       </div>
     </AppProvider>
   );

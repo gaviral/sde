@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useAppContext } from '../../context/AppContext';
 import QuestionItem from './QuestionItem';
 
@@ -11,8 +11,27 @@ const QuestionSelectorSidebar: React.FC<QuestionSelectorSidebarProps> = ({
     isVisible,
     onVisibilityChange
 }) => {
-    const { questions, currentQuestionId, setCurrentQuestionId } = useAppContext();
+    const { questions, currentQuestionId, setCurrentQuestionId, completedQuestions } = useAppContext();
     const [searchTerm, setSearchTerm] = useState('');
+
+    // Calculate progress statistics
+    const stats = useMemo(() => {
+        const total = questions.length;
+        const completed = completedQuestions.size;
+        const realQuestions = questions.filter(q => !q.isPlaceholder).length;
+        const realCompleted = [...completedQuestions].filter(id =>
+            questions.find(q => q.id === id && !q.isPlaceholder)
+        ).length;
+
+        return {
+            totalProgress: total > 0 ? (completed / total) * 100 : 0,
+            realProgress: realQuestions > 0 ? (realCompleted / realQuestions) * 100 : 0,
+            completed,
+            total,
+            realCompleted,
+            realQuestions
+        };
+    }, [questions, completedQuestions]);
 
     const handleQuestionSelect = (id: number) => {
         setCurrentQuestionId(id);
@@ -49,6 +68,21 @@ const QuestionSelectorSidebar: React.FC<QuestionSelectorSidebarProps> = ({
                             </svg>
                         </button>
                     </div>
+
+                    {/* Progress statistics */}
+                    <div className="mb-4">
+                        <div className="flex justify-between text-xs text-gray-600 mb-1">
+                            <span>Real Questions: {stats.realCompleted}/{stats.realQuestions}</span>
+                            <span>{Math.round(stats.realProgress)}%</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                            <div
+                                className="bg-green-600 h-2.5 rounded-full"
+                                style={{ width: `${stats.realProgress}%` }}
+                            ></div>
+                        </div>
+                    </div>
+
                     <input
                         type="text"
                         placeholder="Search questions..."
