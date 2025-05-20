@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import MonacoEditor from '@monaco-editor/react'
 import type { Question } from './questionData'
+import { validateSolution } from '../utils/validateSolution'
 
 interface Props {
   question: Question
@@ -24,10 +25,7 @@ export default function CodeEditor({ question, code, onChange, onCheck }: Props)
   }
 
   function handleCheck() {
-    const issues: string[] = []
-    if (local.trim() !== question.solution.trim()) {
-      issues.push('Solution does not match exactly.')
-    }
+    const issues = validateSolution(question, local)
     onCheck(issues)
   }
 
