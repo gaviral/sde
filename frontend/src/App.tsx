@@ -50,17 +50,14 @@ function App() {
       <div
         className="fixed top-0 left-0 h-full w-1"
         onMouseEnter={() => setShowSelector(true)}
-        onMouseLeave={() => setShowSelector(false)}
       />
       <div
         className="fixed top-0 right-0 h-full w-1"
         onMouseEnter={() => setShowSettings(true)}
-        onMouseLeave={() => setShowSettings(false)}
       />
       <div
         className="fixed bottom-0 left-0 w-full h-1"
         onMouseEnter={() => setShowIssues(true)}
-        onMouseLeave={() => setShowIssues(false)}
       />
       <QuestionSelector
         questions={questions}
