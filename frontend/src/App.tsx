@@ -18,6 +18,9 @@ function App() {
   // persistent progress backed by localStorage via custom hook
   const [progress, setProgress] = usePersistentProgress()
   const [issues, setIssues] = useState<string[]>([])
+  const [showSelector, setShowSelector] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
+  const [showIssues, setShowIssues] = useState(false)
 
   const current = questions.find(q => q.id === progress.selected) || questions[0]
 
@@ -44,19 +47,43 @@ function App() {
 
   return (
     <div className="app">
+      <div
+        className="fixed top-0 left-0 h-full w-1"
+        onMouseEnter={() => setShowSelector(true)}
+        onMouseLeave={() => setShowSelector(false)}
+      />
+      <div
+        className="fixed top-0 right-0 h-full w-1"
+        onMouseEnter={() => setShowSettings(true)}
+        onMouseLeave={() => setShowSettings(false)}
+      />
+      <div
+        className="fixed bottom-0 left-0 w-full h-1"
+        onMouseEnter={() => setShowIssues(true)}
+        onMouseLeave={() => setShowIssues(false)}
+      />
       <QuestionSelector
         questions={questions}
         current={current.id}
         onSelect={id => setProgress(p => ({ ...p, selected: id }))}
+        visible={showSelector}
+        onMouseLeave={() => setShowSelector(false)}
       />
       <QuestionDetails question={current} />
       <CodeEditor
         question={current}
         code={progress.codes[current.id] || current.starter}
         onChange={setCode}
-        onCheck={setIssues}
+        onCheck={iss => {
+          setIssues(iss)
+          if (iss.length > 0) setShowIssues(true)
+        }}
       />
-      <IssuePanel issues={issues} />
+      <IssuePanel
+        issues={issues}
+        visible={showIssues}
+        onMouseLeave={() => setShowIssues(false)}
+      />
       <SettingsSidebar
         mode={progress.mode}
         onModeChange={mode => setProgress(p => ({ ...p, mode }))}
@@ -69,6 +96,8 @@ function App() {
             console.error('Failed to parse progress data from local storage:', e)
           }
         }}
+        visible={showSettings}
+        onMouseLeave={() => setShowSettings(false)}
       />
       <VoiceButton onCommand={handleCommand} /> {/* voice recognition */}
     </div>

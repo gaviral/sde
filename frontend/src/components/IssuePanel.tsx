@@ -3,10 +3,19 @@
  *
  * The panel is hidden when the issue array is empty.
  */
-export default function IssuePanel({ issues }: { issues: string[] }) {
+interface Props {
+  issues: string[]
+  visible?: boolean
+  onMouseLeave?: React.MouseEventHandler<HTMLElement>
+}
+
+export default function IssuePanel({ issues, visible = false, onMouseLeave }: Props) {
   if (issues.length === 0) return null
   return (
-    <aside className="issues">
+    <aside
+      onMouseLeave={onMouseLeave}
+      className={`issues fixed bottom-0 left-0 right-0 bg-white transform transition-transform ${visible ? 'translate-y-0' : 'translate-y-full'}`}
+    >
       <h3>Issues</h3>
       <ul>
         {issues.map((iss, i) => (

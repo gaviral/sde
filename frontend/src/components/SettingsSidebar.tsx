@@ -3,12 +3,21 @@ interface Props {
   onModeChange: (mode: string) => void
   onExport: () => void
   onImport: (data: string) => void
+  visible?: boolean
+  onMouseLeave?: React.MouseEventHandler<HTMLElement>
 }
 
 /**
  * Sidebar for switching modes and importing/exporting progress.
  */
-export default function SettingsSidebar({ mode, onModeChange, onExport, onImport }: Props) {
+export default function SettingsSidebar({
+  mode,
+  onModeChange,
+  onExport,
+  onImport,
+  visible = false,
+  onMouseLeave,
+}: Props) {
   function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
@@ -22,7 +31,10 @@ export default function SettingsSidebar({ mode, onModeChange, onExport, onImport
   }
 
   return (
-    <aside className="settings">
+    <aside
+      onMouseLeave={onMouseLeave}
+      className={`settings fixed top-0 right-0 h-full bg-white transform transition-transform ${visible ? 'translate-x-0' : 'translate-x-full'}`}
+    >
       <h3>Settings</h3>
       <label>
         Mode:
