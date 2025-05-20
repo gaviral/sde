@@ -1,0 +1,16 @@
+{
+    "name": "LeetCode Practice App",
+    "short_name": "LC Practice",
+    "description": "A client-side LeetCode-style practice app for coding interviews",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#3B82F6",
+    "icons": [
+        {
+            "src": "favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 // TypeScript type for Web Speech API, which isn't fully typed in lib.dom.d.ts
 interface SpeechRecognition extends EventTarget {

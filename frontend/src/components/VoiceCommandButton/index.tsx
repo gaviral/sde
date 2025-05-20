@@ -19,7 +19,6 @@ const VoiceCommandButton: React.FC<VoiceCommandButtonProps> = ({ provideButtonRe
 
     const {
         setCurrentQuestionId,
-        currentQuestionId,
         questions
     } = useAppContext();
 
