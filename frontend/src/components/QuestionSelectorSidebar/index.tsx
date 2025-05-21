@@ -49,10 +49,8 @@ const QuestionSelectorSidebar: React.FC<QuestionSelectorSidebarProps> = ({
     return (
         <div
             className={`
-        question-selector fixed top-0 left-0 h-full bg-white shadow-lg z-20 transition-all duration-300 ease-in-out
-        ${isVisible ? 'translate-x-0' : '-translate-x-full'} 
-        w-72 md:relative md:shadow-none
-        ${isVisible ? 'md:flex' : 'md:hidden'}
+        question-selector fixed top-0 left-0 h-full bg-white shadow-lg z-20 transition-transform duration-300 ease-in-out w-72
+        ${isVisible ? 'translate-x-0' : '-translate-x-full invisible'}
       `}
         >
             <div className="h-full flex flex-col">

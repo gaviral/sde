@@ -85,22 +85,40 @@ function App() {
     if (ref) checkButtonRef.current = ref;
   };
 
+  const handleCheckCode = () => {
+    // Find and click the check button in the IssuePanel
+    document.querySelector<HTMLButtonElement>('[data-action="check"]')?.click();
+    // Make sure the issue panel is visible
+    setIssuePanelVisible(true);
+  };
+
   return (
     <AppProvider>
-      <div className="app-container h-screen w-screen flex overflow-hidden">
+      <div className="app-container h-screen w-screen flex overflow-hidden relative">
+        {/* Sidebars are now absolutely positioned */}
         <QuestionSelectorSidebar
           isVisible={leftSidebarVisible}
           onVisibilityChange={setLeftSidebarVisible}
         />
 
-        <div className="main-area flex flex-col flex-grow h-full overflow-hidden">
+        {/* Main content area */}
+        <div className="main-content-area flex flex-col flex-grow h-full overflow-hidden">
           <div className="main-content flex flex-grow overflow-hidden">
             <QuestionDetailsPanel />
-            <div className="code-editor-container flex-grow overflow-hidden">
+            <div className="code-editor-container flex-grow overflow-hidden relative">
               <CodeEditor />
+              {/* Persistent Check Button */}
+              <button
+                onClick={handleCheckCode}
+                className="absolute bottom-4 right-4 px-4 py-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600 transition z-20"
+                data-action="persistent-check"
+              >
+                Check Solution
+              </button>
             </div>
           </div>
 
+          {/* Issue Panel is now absolutely positioned */}
           <IssuePanel
             isVisible={issuePanelVisible}
             onVisibilityChange={setIssuePanelVisible}
@@ -108,6 +126,7 @@ function App() {
           />
         </div>
 
+        {/* Settings Sidebar is now absolutely positioned */}
         <SettingsSidebar
           isVisible={rightSidebarVisible}
           onVisibilityChange={setRightSidebarVisible}

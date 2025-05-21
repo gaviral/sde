@@ -13,25 +13,35 @@
 .hover-zone-bottom {
   position: absolute;
   z-index: 10;
+  /* Uncomment during development to see the zones */
+  /* background-color: rgba(255, 0, 0, 0.2); */
+  pointer-events: auto;
+  /* Ensure zones capture mouse events */
 }
 
 .hover-zone-left {
   left: 0;
   top: 0;
   height: 100%;
-  width: 20px;
+  width: 30px;
+  /* Increased from 20px */
 }
 
 .hover-zone-right {
   right: 0;
   top: 0;
   height: 100%;
-  width: 20px;
+  width: 30px;
+  /* Increased from 20px */
 }
 
 .hover-zone-bottom {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 20px;
+  height: 30px;
+  /* Increased from 20px */
+  /* Ensure it doesn't block the Check Solution button */
+  z-index: 5;
+  /* Lower z-index than buttons */
 }

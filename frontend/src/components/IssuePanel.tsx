@@ -40,14 +40,18 @@ const IssuePanel: React.FC<IssuePanelProps> = ({
             setIssues(result.issues);
         }
 
-        // Show the panel if there are issues
+        // Show the panel if there are issues or the solution is correct
         if (result.issues.length > 0 || result.isValid) {
             onVisibilityChange(true);
         }
     };
 
     return (
-        <div className={`issue-panel p-4 border-t border-gray-200 ${isVisible ? 'h-40' : 'h-0 overflow-hidden'} transition-all duration-300 ease-in-out`}>
+        <div className={`
+            issue-panel fixed bottom-0 left-0 right-0 bg-white shadow-lg z-20 transition-transform duration-300 ease-in-out
+            ${isVisible ? 'translate-y-0' : 'translate-y-full invisible'}
+            ${isVisible ? 'h-40' : 'h-0'} overflow-hidden
+        `}>
             <div className="flex justify-between items-center mb-2">
                 <h3 className="font-bold">Issues</h3>
                 <div className="flex space-x-2">
